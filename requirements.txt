@@ -5,3 +5,4 @@ asyncio == 3.4.3
 koreanbots == 0.1.2
 aiohttp == 3.6.2
 requests == 2.23.0
+neispy == 2.0.4
