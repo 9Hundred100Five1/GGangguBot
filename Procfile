@@ -1,1 +1,1 @@
-worker: python import neispy.py
+worker: python main.py
