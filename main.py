@@ -1,12 +1,11 @@
 import neispy
 import asyncio
 import discord
-from datetime import datetime
-import now
+import datetime
 import requests
-from pypapago import Translator
 import os
 import sys
+import pkg_resources
 
 owner = [554114456703991808]
 client = discord.Client()
@@ -25,20 +24,17 @@ async def on_message(message):
 
     neis = neispy.AsyncClient('e56853ad96dc4d2194472ad88a3926be')
 
-    if message.author == client.user:
-        return
+    if message.author.bot:
+        return None
 
     if message.content == '깽구야 정보':
         embed=discord.Embed(color=0xff00, title="깽구의 정보", description="``깽구는 학교급식 알리미 역할 및 여러 학교생활에 유용한 정보들을 불러오는 봇입니다.``", timestamp=message.created_at)
         embed.set_footer(text=message.author, icon_url=message.author.avatar_url)
         embed.add_field(name='깽구 탄신일', value='``깽구의 생일입니다 ! (선물 준비안하면 깽구가 현실갱 간다는 소문이..)``', inline=True)
         embed.add_field(name='깽구야 도와줘', value='``각종 명령어 소개 !``', inline=True)
-        embed.add_field(name='Discord.py 버전', value='``1.3.4``', inline=True)
+        embed.add_field(name='Discord.py 버전', value=f'`{pkg_resources.get_distribution("discord.py").version}`', inline=True)
         embed.add_field(name='깽구봇 개발환경', value='`` i5 8250U 삼성전자 DDR4 8GB SO-DIMM 2400Mhz  5NVIDIA GeForce MX150-1  Intel UHD Graphics 620``', inline=True)
         await message.channel.send(embed=embed)
-
-    if message.author == client.user:
-        return
 
     if message.content.startswith('깽구야 급식정보 '):
         msg = message.content[9:]
@@ -60,12 +56,14 @@ async def on_message(message):
         warp = await guild.create_category('문의사항')
         text = await guild.create_text_channel("문의사항", category=warp, topic=f'{message.author.id} 문의사항')
         await client.get_channel(int(text.id)).send(f'<@{message.author.id}> 님의 문의사항\n{msg}')
+        
     if message.content.startswith('깽구야 답변'):
         if message.author.guild_permissions.administrator or str(message.author.id) in owner:
             ekqqus = message.content[7:]
             author = message.channel.topic[0:18]
             print(author)
             await client.get_user(int(author)).send(f'관리자(<@{message.author.id}>)님 답변\n{ekqqus}')
+
     if message.content == '깽구야 삭제':
         if message.author.guild_permissions.administrator or str(message.author.id) in owner:
             guild = message.guild
@@ -119,7 +117,7 @@ async def on_message(message):
                     title = msg.split('&&')[0],
                     description = msg.split('&&')[1] + f"\n\n이 채널에 공지가 오기 싫다면 `봇-공지` 채널을 만들어주세요!\n[{client.user.name} 초대하기](https://discord.com/oauth2/authorize?client_id=737300288280592404&permissions=8&scope=bot)\n[팀 SB 공식 포럼](https://discord.gg/9w5DhsB)",                        colour = discord.Colour.blue(),
                     timestamp = message.created_at
-                ).set_footer(icon_url=message.author.avatar_url, text=f'{message.author} - 인증됨') .set_thumbnail(url=client.user.avatar_url_as(format=None, static_format="png", size=1024))
+                ).set_footer(icon_url=message.author.avatar_url, text=f'{message.author} - 인증됨, 원작자는 삼성해피트리입니다.' ) .set_thumbnail(url=client.user.avatar_url_as(format=None, static_format="png", size=1024))
             except IndexError:
                 await message.channel.send(f"형식이 틀렸습니다. ``깽구야 공지 <제목>&&<내용>``으로 다시 시도해보세요.")
             m = await message.channel.send("아래와 같이 공지가 발신됩니다!", embed=embed)
@@ -167,10 +165,4 @@ async def on_message(message):
         else:
             await message.channel.send('권한이 부족하여 메세지전송이 취소되었습니다.')
 
-
-
-        
-access_token = os.environ["BOT_TOKEN"]
-client.run(access_token)
-
-
+client.run('NzM3MzAwMjg4MjgwNTkyNDA0.Xx7WZw.3lPSS-X9edCbxG8Fv-3G7AOfdlg')
