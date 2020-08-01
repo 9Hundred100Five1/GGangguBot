@@ -62,8 +62,7 @@ async def on_message(message):
                 await message.channel.send("**오류 !! 오류 !! 건의사항을 입력해주세요 !! **")
             else:
                 msg = message.content[7:]
-                await client.get_channel(int(건의)).send(embed = discord.Embed(title=f"{message.author}님의 건의", description=msg
-                embed.set_footer(text=, icon_url=message.author.avatar_url))
+                await client.get_channel(int(건의)).send(embed = discord.Embed(title=f"{message.author}님의 건의", description=msg , timestamp=message.created_at))
                 await message.channel.send(f"{message.author.mention}님 ! 건의 신청이 완료되었습니다. ")
                 try:
                     await message.delete()
@@ -83,7 +82,7 @@ async def on_message(message):
         embed.add_field(name='깽구야 급식정보 학교이름', value='``깽구가 수소문을 하면서 열심히 수집한 급식정보를 알려줍니다.``', inline=False)
         embed.add_field(name='깽구야 문의', value='``깽구봇에 대한 건의를 할수있습니다.``', inline=False)
         embed.add_field(name='깽구야 번역 번역할문장', value='``깽구가 번역을 해줍니다 !``', inline=False)
-        embed.add_field(name'깽구야 핑', value='``현재 핑을 알려줍니다.``', inline=False)
+        embed.add_field(name='깽구야 핑', value='``현재 핑을 알려줍니다.``', inline=False)
         await message.channel.send(embed=embed)
 
     if message.content.startswith('깽구야 번역 '):
@@ -162,6 +161,26 @@ async def on_message(message):
                     await m.edit(content="발신이 완료되었습니다!", embed=embed)
         else:
             await message.channel.send('권한이 부족하여 메세지전송이 취소되었습니다.')
+
+
+
+
+async def my_background_task():
+    await client.wait_until_ready()
+    while not client.is_closed():
+        game = discord.Game("깽구야 도와줘를 통해서 명령어를 알아보세요 !")
+        await client.change_presence(status=discord.Status.online, activity=game)
+        await asyncio.sleep(10)
+        game = discord.Game(f'서버:{len(client.guilds)}개/유저:{len(client.users)}명과 함께 지내는중')
+        await client.change_presence(status=discord.Status.online, activity=game)
+        await asyncio.sleep(10)
+        game = discord.Game(f'핑:{round(client.latency * 1000)}ms')   
+        await client.change_presence(status=discord.Status.online, activity=game)
+        await asyncio.sleep(10)
+        game = discord.Game("이 메시지는 10초 마다 바꿥니다")
+        await client.change_presence(status=discord.Status.online, activity=game)
+        await asyncio.sleep(10)
+client.loop.create_task(my_background_task())
 
 
         
