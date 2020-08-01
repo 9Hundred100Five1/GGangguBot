@@ -27,15 +27,6 @@ async def on_message(message):
     if message.author.bot:
         return None
 
-    if message.content == '깽구야 정보':
-        embed=discord.Embed(color=0xff00, title="깽구의 정보", description="``깽구는 학교급식 알리미 역할 및 여러 학교생활에 유용한 정보들을 불러오는 봇입니다.``", timestamp=message.created_at)
-        embed.set_footer(text=message.author, icon_url=message.author.avatar_url)
-        embed.add_field(name='깽구 탄신일', value='``깽구의 생일입니다 ! (선물 준비안하면 깽구가 현실갱 간다는 소문이..)``', inline=True)
-        embed.add_field(name='깽구야 도와줘', value='``각종 명령어 소개 !``', inline=True)
-        embed.add_field(name='Discord.py 버전', value=f'`{pkg_resources.get_distribution("discord.py").version}`', inline=True)
-        embed.add_field(name='깽구봇 개발환경', value='`` i5 8250U 삼성전자 DDR4 8GB SO-DIMM 2400Mhz  5NVIDIA GeForce MX150-1  Intel UHD Graphics 620``', inline=True)
-        await message.channel.send(embed=embed)
-
     if message.content.startswith('깽구야 급식정보 '):
         msg = message.content[9:]
         scinfo = await neis.schoolInfo(SCHUL_NM=msg)
@@ -52,8 +43,19 @@ async def on_message(message):
 
     if message.content == '깽구야 핑':
         ping= round(client.latency * 1000)
+        if ping >= 0 and ping <= 100:
+            pings = "매우좋음"
+        elif ping >= 101 and ping <= 200:
+            pings = "좋음" 
+        elif ping >= 201 and ping <= 500:
+            pings = "보통"
+        elif ping >= 501 and ping <= 1000:
+            pings = "나쁨"
+        elif ping >= 1000:
+            pings = "매우나쁨"
         embed = discord.Embed(title='🏓퐁!', colour = message.author.colour)
         embed.add_field(name = '핑', value=f'{ping}ms')
+        embed.add_field(name = '상태:', value=f"{pings}")
         embed.set_thumbnail(url='https://images.emojiterra.com/google/android-10/share/1f3d3.jpg')
         await message.channel.send(embed=embed)
 
@@ -83,8 +85,23 @@ async def on_message(message):
         embed.add_field(name='깽구야 문의', value='``깽구봇에 대한 건의를 할수있습니다.``', inline=False)
         embed.add_field(name='깽구야 번역 번역할문장', value='``깽구가 번역을 해줍니다 !``', inline=False)
         embed.add_field(name='깽구야 핑', value='``현재 핑을 알려줍니다.``', inline=False)
+        embed.add_field(name='깽구 탄신일', value='``깽구가 태어난날을 알려줍니다.``', inline=False)
+        embed.add_field(name='깽구야 버전', value='``깽구봇의 버전을 알려줍니다.``', inline=False)
         await message.channel.send(embed=embed)
-
+    
+    if message.content == '깽구 탄신일':
+        embed=discord.Embed(color=0xff00, title="깽구의 탄신일", description="우헤헿", timestamp=message.created_at)
+        embed.set_footer(text=message.author, icon_url=message.author.avatar_url)
+        embed.add_field(name='깽구의 생일', value='**7월 27일** 은 깽구의 생일입니다 ! (선물 준비안하면 깽구가 현실갱 간다는 소문이..)', inline=False)
+        await message.channel.send(embed=embed)
+    
+    if message.content == '깽구야 버전':
+        embed=discord.Embed(color=0xff00, title="깽구의 버전", description="뾰로롱 !", timestamp=message.created_at)
+        embed.set_footer(text=message.author, icon_url=message.author.avatar_url)
+        embed.add.field(name='Discord.Py 버전', value=f'`{pkg_resources.get_distribution("discord.py").version}`')
+        embed.add_field(name='Python 버전', value='Python 3.8.2 64-bit')
+        await message.channel.send(embed=embed)
+        
     if message.content.startswith('깽구야 번역 '):
         client_id = "a6BgeA44fGPgCocW5TEX"
         client_secret = "C5PqpewyBZ"
@@ -161,6 +178,14 @@ async def on_message(message):
                     await m.edit(content="발신이 완료되었습니다!", embed=embed)
         else:
             await message.channel.send('권한이 부족하여 메세지전송이 취소되었습니다.')
+
+    if message.content == '깽구야 초대':
+        embed=discord.Embed(color=0xff00, title="깽구봇 초대링크", description=f"[{client.user.name} 초대하기](https://discord.com/oauth2/authorize?client_id=737300288280592404&permissions=8&scope=bot)\n[팀 SB 공식 포럼](https://discord.gg/9w5DhsB)", timestamp=message.created_at)
+        embed.set_footer(text=message.author, icon_url=message.author.avatar_url)
+        await message.channel.send(embed=embed)
+
+
+    
 
 
 
