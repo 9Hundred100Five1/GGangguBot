@@ -17,7 +17,7 @@ async def on_ready():
     print(client.user.id)
     print("------------------")
     game = discord.Game("맛있는 급식 Eating..")
-    await client.change_presence(status=discord.Status.online, activity=game)
+   
 
 @client.event
 async def on_message(message):
@@ -48,6 +48,13 @@ async def on_message(message):
         embed.add_field(name='교육청 코드', value=AE, inline=False)
         embed.add_field(name='학교 코드', value=SE, inline=False)
         embed.add_field(name='급식 정보:', value=meal, inline=True)
+        await message.channel.send(embed=embed)
+
+    if message.content == '깽구야 핑':
+        ping= round(client.latency * 1000)
+        embed = discord.Embed(title='🏓퐁!', colour = message.author.colour)
+        embed.add_field(name = '핑', value=f'{ping}ms')
+        embed.set_thumbnail(url='https://images.emojiterra.com/google/android-10/share/1f3d3.jpg')
         await message.channel.send(embed=embed)
 
     if message.content.startswith('깽구야 문의'):
@@ -165,4 +172,6 @@ async def on_message(message):
         else:
             await message.channel.send('권한이 부족하여 메세지전송이 취소되었습니다.')
 
+
+        
 client.run('NzM3MzAwMjg4MjgwNTkyNDA0.Xx7WZw.3lPSS-X9edCbxG8Fv-3G7AOfdlg')
