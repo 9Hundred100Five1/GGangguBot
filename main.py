@@ -57,28 +57,18 @@ async def on_message(message):
         embed.set_thumbnail(url='https://images.emojiterra.com/google/android-10/share/1f3d3.jpg')
         await message.channel.send(embed=embed)
 
-    if message.content.startswith('깽구야 문의'):
-        msg = message.content[7:]
-        guild = message.guild
-        warp = await guild.create_category('문의사항')
-        text = await guild.create_text_channel("문의사항", category=warp, topic=f'{message.author.id} 문의사항')
-        await client.get_channel(int(text.id)).send(f'<@{message.author.id}> 님의 문의사항\n{msg}')
-        
-    if message.content.startswith('깽구야 답변'):
-        if message.author.guild_permissions.administrator or str(message.author.id) in owner:
-            ekqqus = message.content[7:]
-            author = message.channel.topic[0:18]
-            print(author)
-            await client.get_user(int(author)).send(f'관리자(<@{message.author.id}>)님 답변\n{ekqqus}')
-
-    if message.content == '깽구야 삭제':
-        if message.author.guild_permissions.administrator or str(message.author.id) in owner:
-            guild = message.guild
-            warp = discord.utils.get(guild.channels, name = "문의사항") 
-            for a in warp.channels:
-                if "문의사항"in a.name:
-                    await a.delete()
-                    await warp.delete() 
+    if message.content.startswith("깽구야 건의 "):
+            if str(message.content[7:]) == '' or str(message.content[7:]) == ' ':
+                await message.channel.send("**오류 !! 오류 !! 건의사항을 입력해주세요 !! **")
+            else:
+                msg = message.content[7:]
+                await client.get_channel(int(건의)).send(embed = discord.Embed(title=f"{message.author}님의 건의", description=msg
+                embed.set_footer(text=, icon_url=message.author.avatar_url))
+                await message.channel.send(f"{message.author.mention}님 ! 건의 신청이 완료되었습니다. ")
+                try:
+                    await message.delete()
+                except:
+                    pass
 
 
     if message.content == '깽구 탄신일':
@@ -93,6 +83,7 @@ async def on_message(message):
         embed.add_field(name='깽구야 급식정보 학교이름', value='``깽구가 수소문을 하면서 열심히 수집한 급식정보를 알려줍니다.``', inline=False)
         embed.add_field(name='깽구야 문의', value='``깽구봇에 대한 건의를 할수있습니다.``', inline=False)
         embed.add_field(name='깽구야 번역 번역할문장', value='``깽구가 번역을 해줍니다 !``', inline=False)
+        embed.add_field(name'깽구야 핑', value='``현재 핑을 알려줍니다.``', inline=False)
         await message.channel.send(embed=embed)
 
     if message.content.startswith('깽구야 번역 '):
