@@ -28,18 +28,23 @@ async def on_message(message):
         return None
 
     if message.content.startswith('깽구야 급식정보 '):
-        msg = message.content[9:]
-        scinfo = await neis.schoolInfo(SCHUL_NM=msg)
-        AE = scinfo.ATPT_OFCDC_SC_CODE  # 교육청코드
-        SE = scinfo.SD_SCHUL_CODE
-        scmeal = await neis.mealServiceDietInfo(AE, SE)
-        meal = scmeal.DDISH_NM.replace('<br/>', '\n')
-        embed=discord.Embed(color=0xff00, title="깽구가 불러온 급식정보", description="``꺵구가 급식정보를 불러왔습니다. 정말 자랑스럽네요!``", timestamp=message.created_at)
-        embed.set_footer(text=message.author, icon_url=message.author.avatar_url)
-        embed.add_field(name='교육청 코드', value=AE, inline=False)
-        embed.add_field(name='학교 코드', value=SE, inline=False)
-        embed.add_field(name='급식 정보:', value=meal, inline=True)
-        await message.channel.send(embed=embed)
+        try:
+            msg = message.content[9:]
+            scinfo = await neis.schoolInfo(SCHUL_NM=msg)
+            AE = scinfo.ATPT_OFCDC_SC_CODE  # 교육청코드
+            SE = scinfo.SD_SCHUL_CODE
+            scmeal = await neis.mealServiceDietInfo(AE, SE)
+            meal = scmeal.DDISH_NM.replace('<br/>', '\n')
+            embed=discord.Embed(color=0xff00, title="깽구가 불러온 급식정보", description="``꺵구가 급식정보를 불러왔습니다. 정말 자랑스럽네요!``", timestamp=message.created_at)
+            embed.set_footer(text=message.author, icon_url=message.author.avatar_url)
+            embed.add_field(name='교육청 코드', value=AE, inline=False)
+            embed.add_field(name='학교 코드', value=SE, inline=False)
+            embed.add_field(name='급식 정보:', value=meal, inline=True)
+            await message.delete()
+            await message.channel.send(embed=embed)
+        except neispy.error.DataNotFound:
+            await message.delete()
+            await message.channel.send('해당하는 데이터가 없습니다.')
 
     if message.content == '깽구야 핑':
         ping= round(client.latency * 1000)
@@ -72,10 +77,6 @@ async def on_message(message):
                     pass
 
 
-    if message.content == '깽구 탄신일':
-        embed=discord.Embed(color=0xff00, title="깽구의 탄신일", description="``2020년 07월27일 오후 1시27분, 깽구는 자신의 몸을 세상밖으로 드러냈답니다 !``", timestamp=message.created_at)
-        embed.set_footer(text=message.author, icon_url=message.author.avatar_url)
-        await message.channel.send(embed=embed)
 
     if message.content == '깽구야 도와줘':
         embed=discord.Embed(color=0xff00, title="깽구의 도움 !", description="``내가 도와줄게 !``", timestamp=message.created_at)
@@ -98,7 +99,7 @@ async def on_message(message):
     if message.content == '깽구야 버전':
         embed=discord.Embed(color=0xff00, title="깽구의 버전", description="뾰로롱 !", timestamp=message.created_at)
         embed.set_footer(text=message.author, icon_url=message.author.avatar_url)
-        embed.add.field(name='Discord.Py 버전', value=f'`{pkg_resources.get_distribution("discord.py").version}`')
+        embed.add_field(name='Discord.Py 버전', value=f'`{pkg_resources.get_distribution("discord.py").version}`')
         embed.add_field(name='Python 버전', value='Python 3.8.2 64-bit')
         await message.channel.send(embed=embed)
         
@@ -108,7 +109,7 @@ async def on_message(message):
 
         url = "https://openapi.naver.com/v1/papago/n2mt"
 
-        msg = message.content[8:]
+        msg = message.content[7:]
         headers = {"X-Naver-Client-Id": client_id, "X-Naver-Client-Secret": client_secret}
         params = {"source": "en", "target": "ko", "text": msg}
         response = requests.post(url, headers=headers, data=params)
