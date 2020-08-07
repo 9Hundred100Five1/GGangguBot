@@ -4,3 +4,4 @@ datetime==4.3
 koreanbots==0.2.0
 requests==2.24.0
 neispy==2.0.4
+DiscordHelper==0.2
