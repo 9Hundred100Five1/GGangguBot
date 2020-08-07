@@ -50,7 +50,7 @@ async def on_message(message):
             await message.delete()
             await message.channel.send('해당하는 데이터가 없습니다.')
         except discord.errors.Forbidden:
-            await message.channel.send('권한이 없습니다. 관리자 권한을 부여해주세요')
+            await message.channel.send('권한이 없습니다. 메시지 관리 권한을 부여해주세요')
 
     if message.content == '깽구야 핑':
         ping= round(client.latency * 1000)
@@ -194,7 +194,12 @@ async def on_message(message):
     if message.content == '깽구야 업타임':
         embed=discord.Embed(color=0xff00, title="깽구봇 업타임", description=f"{helper.uptime()}", timestamp=message.created_at)
         embed.set_footer(text=message.author, icon_url=message.author.avatar_url)
-        await message.channel.send(embed=embed) 
+        await message.channel.send(embed=embed)
+
+
+
+
+    
 
 
 
