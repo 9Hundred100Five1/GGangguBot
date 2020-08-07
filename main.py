@@ -6,9 +6,13 @@ import requests
 import os
 import sys
 import pkg_resources
+import time
+from DiscordHelper import DiscordHelper
 
 owner = [554114456703991808]
+건의 = 738021499557904406
 client = discord.Client()
+helper = DiscordHelper()
 
 @client.event
 async def on_ready():
@@ -45,6 +49,8 @@ async def on_message(message):
         except neispy.error.DataNotFound:
             await message.delete()
             await message.channel.send('해당하는 데이터가 없습니다.')
+        except discord.errors.Forbidden:
+            await message.channel.send('권한이 없습니다. 관리자 권한을 부여해주세요')
 
     if message.content == '깽구야 핑':
         ping= round(client.latency * 1000)
@@ -73,8 +79,8 @@ async def on_message(message):
                 await message.channel.send(f"{message.author.mention}님 ! 건의 신청이 완료되었습니다. ")
                 try:
                     await message.delete()
-                except:
-                    pass
+                except discord.errors.Forbidden:
+                    await message.channel.send('봇의 권한이 부족합니다. 관리자 역할을 지급해주세요.')
 
 
 
@@ -184,6 +190,13 @@ async def on_message(message):
         embed=discord.Embed(color=0xff00, title="깽구봇 초대링크", description=f"[{client.user.name} 초대하기](https://discord.com/oauth2/authorize?client_id=737300288280592404&permissions=8&scope=bot)\n[팀 SB 공식 포럼](https://discord.gg/9w5DhsB)", timestamp=message.created_at)
         embed.set_footer(text=message.author, icon_url=message.author.avatar_url)
         await message.channel.send(embed=embed)
+
+    if message.content == '깽구야 업타임':
+        embed=discord.Embed(color=0xff00, title="깽구봇 업타임", description=f"{helper.uptime()}", timestamp=message.created_at)
+        embed.set_footer(text=message.author, icon_url=message.author.avatar_url)
+        await message.channel.send(embed=embed)
+
+
 
 
     
