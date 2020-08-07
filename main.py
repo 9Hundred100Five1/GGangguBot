@@ -194,12 +194,7 @@ async def on_message(message):
     if message.content == '깽구야 업타임':
         embed=discord.Embed(color=0xff00, title="깽구봇 업타임", description=f"{helper.uptime()}", timestamp=message.created_at)
         embed.set_footer(text=message.author, icon_url=message.author.avatar_url)
-        await message.channel.send(embed=embed)
-
-
-
-
-    
+        await message.channel.send(embed=embed) 
 
 
 
