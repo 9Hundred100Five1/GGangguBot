@@ -44,10 +44,8 @@ async def on_message(message):
             embed.add_field(name='교육청 코드', value=AE, inline=False)
             embed.add_field(name='학교 코드', value=SE, inline=False)
             embed.add_field(name='급식 정보:', value=meal, inline=True)
-            await message.delete()
             await message.channel.send(embed=embed)
         except neispy.error.DataNotFound:
-            await message.delete()
             await message.channel.send('해당하는 데이터가 없습니다.')
         except discord.errors.Forbidden:
             await message.channel.send('권한이 없습니다. 메시지 관리 권한을 부여해주세요')
@@ -197,10 +195,15 @@ async def on_message(message):
         await message.channel.send(embed=embed)
 
 
-
+    #
 
     
-
+async def bg_change_playing():
+    now = datetime.datetime.now()
+    if now.hour == 24:
+        await client.logout()
+        await asyncio.sleep(2.5)
+        await client.login()
 
 
 
