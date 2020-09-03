@@ -10,7 +10,7 @@ import time
 from DiscordHelper import DiscordHelper
 
 owner = [554114456703991808]
-건의 = 738021499557904406
+건의 = 750219469476986890
 client = discord.Client()
 helper = DiscordHelper()
 
@@ -79,6 +79,8 @@ async def on_message(message):
                     await message.delete()
                 except discord.errors.Forbidden:
                     await message.channel.send('봇의 권한이 부족합니다. 관리자 역할을 지급해주세요.')
+                except Exception as ex: # 에러 종류
+                    await message.channel.send('에러가 발생 했습니다', ex)
 
 
 
