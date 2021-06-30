@@ -227,5 +227,4 @@ async def my_background_task():
 client.loop.create_task(my_background_task())
 
 
-        
-client.run('NzM3MzAwMjg4MjgwNTkyNDA0.Xx7WZw.3lPSS-X9edCbxG8Fv-3G7AOfdlg')
+     
